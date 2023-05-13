@@ -17,7 +17,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="index.html">
+              <a class="nav-link" href="{{url('/redirect')}}">
                 <span class="menu-title">Kontrol Paneli</span>
                 <i class="mdi mdi-home menu-icon"></i>
               </a>
@@ -38,6 +38,12 @@
             <li class="nav-item">
               <a class="nav-link" href="{{url('view_catagory')}}">
                 <span class="menu-title">Kategori</span>
+                <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url('order')}}">
+                <span class="menu-title">Sipariş</span>
                 <i class="mdi mdi-format-list-bulleted menu-icon"></i>
               </a>
             </li>

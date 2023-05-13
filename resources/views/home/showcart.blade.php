@@ -2,7 +2,6 @@
 <html lang="zxx">
 
 <head>
-    <base href="/public">
     <meta charset="UTF-8">
     <meta name="description" content="Male_Fashion Template">
     <meta name="keywords" content="Male_Fashion, unica, creative, html">
@@ -23,6 +22,33 @@
     <link rel="stylesheet" href="home/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="home/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="home/css/style.css" type="text/css">
+
+    <style>
+        .center{
+            margin:auto;
+            margin-left:40px;
+            width:50%;
+            margin-top:10px;
+            margin-bottom:100px;
+            padding:30px;
+            text-align:center;
+        }
+
+        table,th,td{
+            border:1px solid black;
+        }
+        .image_deg{
+            height:150px;
+            width:150px;
+        }
+
+        .total_deg{
+            font-size:30px;
+            padding: 40px;
+            family-font:bold;
+          
+        }
+    </style>
 </head>
 
 <body>
@@ -57,50 +83,53 @@
    @include('home.header')
     <!-- Header Section End -->
 
-    <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix" style="margin:auto;width:50%;padding:30px;">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg">
-                            <a href="{{url('product_details',$product->id)}}"><img style="margin:auto" heigth="150" width="150"src="product/{{$product->image}}"></a>
-                            
-                        </div>
-                        <div class="product__item__text">
-                            <h5 style="font-weight: 700;;">{{$product->title}}</h5>
-
-                            @if($product->discount_price!=null)
-                            İndirimli fiyatı
-                            <br>
-                            <h5 style="color:red;">${{$product->discount_price}}</h5>
-                            Fiyat
-                            <br>
-                            <h5 style="text-decoration:line-through">${{$product->price}}</h5> 
-                            @else
-                            Fiyat
-                            <br>
-                            <h5>${{$product->price}}</h5> 
-                            @endif
-
-                            <h5>Ürün Kategorisi: {{$product->catagory}}</h5> 
-                            <h5>Ürün Açıklaması: {{$product->description}}</h5>
-                            <h5>Adet : {{$product->quantity}}</h5> 
-
-                            <form action="{{url('add_cart',$product->id)}}" method="POST">
-                            @csrf
-                            <div >
-                                <div class="">
-                                    <input class="btn btn-light" style="float:right" type="submit" value="Ekle">
-                                </div>
-                            
-                                <div class="">
-                                    <input style="width:100px" type="number" name="quantity" autocomplete="off" min="1">
-                                </div>
-                            </div>
-                        </form><br>
-                            
-                            
-                        </div>
-                    </div>
+    @if(session('message'))
+              <div class="alert alert-dark " role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  </button>
+                  {{ session('message') }}
+              </div>
+          @endif
+    
+    <div class="container">
+        <div class="row">
+            <div class="center">
+                <table>
+                <tr style="background-color:#dad0ff;padding:10px;font-size:25px">
+                    <th>Ürün Başlık</th>
+                    <th>Ürün Miktar</th>
+                    <th>Fiyat</th>
+                    <th>Image</th>
+                    <th>Action</th>
+                </tr>
+        <?php $totalprice=0; ?>
+            @foreach($cart as $cart)
+                <tr>
+                    <td>{{$cart->product_title}}</td>
+                    <td>{{$cart->quantity}}</td>
+                    <td>${{$cart->price}}</td>
+                    <td><img class="image_deg" src="/product/{{$cart->image}}"></td>
+                    <td> <a style="background-color:#ff485f" class="btn btn-light" href="{{url('/remove_cart',$cart->id)}}" onclick="return confirm('Emin misiniz?')">Çıkart</a></td>
+                </tr>
+        <?php $totalprice=$totalprice + $cart ->price; ?>
+            @endforeach   
+                <div> 
+                    <h3 class="total_deg">Toplam Fiyat: ${{$totalprice}}</h3>
                 </div>
-   
+
+            </table>
+           
+        </div>
+                <div style="margin-right:210px;margin-top:50px;">
+                    <h3 style="text-align:center;font-size:15px;">Siparişe devam et</h3>
+                    <a style="margin:10px;padding:10px;" href="{{url('cash_order')}}" class="btn btn-light">Kapıda Ödeme</a>
+                    <a style="margin:10px;padding:10px;" href="{{url('stripe',$totalprice)}}" class="btn btn-light">Kart ile Ödeme</a>
+                </div>
+        </div>
+    
+    </div>
+</div>
+  
 
     <!-- Footer Section Begin -->
     @include('home.footer')

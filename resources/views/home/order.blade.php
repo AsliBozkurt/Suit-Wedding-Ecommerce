@@ -2,7 +2,6 @@
 <html lang="zxx">
 
 <head>
-    <base href="/public">
     <meta charset="UTF-8">
     <meta name="description" content="Male_Fashion Template">
     <meta name="keywords" content="Male_Fashion, unica, creative, html">
@@ -23,6 +22,21 @@
     <link rel="stylesheet" href="home/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="home/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="home/css/style.css" type="text/css">
+
+    <style>
+        .center{
+            margin:auto;
+            width:70%;
+            margin-top:10px;
+            margin-bottom:100px;
+            padding:30px;
+            text-align:center;
+        }
+
+        table,th,td {
+            border:1px solid black;
+        }
+    </style>
 </head>
 
 <body>
@@ -56,51 +70,48 @@
     <!-- Header Section Begin -->
    @include('home.header')
     <!-- Header Section End -->
+    
+    <div class="container">
+        <div class="row">
+            <div class="center">
+                <table>
+                    <tr  style="background-color:#dad0ff;padding:10px;font-size:25px">
+                        <th>Ürün Başlık</th>
+                        <th>Miktar</th>
+                        <th>Fiyat</th>
+                        <th>Ödeme Durumu</th>
+                        <th>Teslimat Durumu</th>
+                        <th>Image</th>
+                        <th>Ürünü İptal Et</th>
+                    </tr>
 
-    <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix" style="margin:auto;width:50%;padding:30px;">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg">
-                            <a href="{{url('product_details',$product->id)}}"><img style="margin:auto" heigth="150" width="150"src="product/{{$product->image}}"></a>
-                            
-                        </div>
-                        <div class="product__item__text">
-                            <h5 style="font-weight: 700;;">{{$product->title}}</h5>
+                    @foreach($order as $order)
+                    <tr>
+                        <td>{{$order->product_title}}</td>
+                        <td>{{$order->quantity}}</td>
+                        <td>{{$order->price}}</td>
+                        <td>{{$order->payment_status}}</td>
+                        <td>{{$order->delivery_status}}</td>
+                        <td>
+                            <img heigth="100" width="100" src="product/{{$order->image}}">
+                        </td>
 
-                            @if($product->discount_price!=null)
-                            İndirimli fiyatı
-                            <br>
-                            <h5 style="color:red;">${{$product->discount_price}}</h5>
-                            Fiyat
-                            <br>
-                            <h5 style="text-decoration:line-through">${{$product->price}}</h5> 
+                        
+                        <td>
+                        @if($order->delivery_status=='processing')
+                            <a style="background-color:#ff485f" class="btn btn-light" onclick="return confirm('Ürünü İptal etmek istiyor musun?')" href="{{url('cancel_order',$order->id)}}">İptal Et</a>
                             @else
-                            Fiyat
-                            <br>
-                            <h5>${{$product->price}}</h5> 
-                            @endif
-
-                            <h5>Ürün Kategorisi: {{$product->catagory}}</h5> 
-                            <h5>Ürün Açıklaması: {{$product->description}}</h5>
-                            <h5>Adet : {{$product->quantity}}</h5> 
-
-                            <form action="{{url('add_cart',$product->id)}}" method="POST">
-                            @csrf
-                            <div >
-                                <div class="">
-                                    <input class="btn btn-light" style="float:right" type="submit" value="Ekle">
-                                </div>
-                            
-                                <div class="">
-                                    <input style="width:100px" type="number" name="quantity" autocomplete="off" min="1">
-                                </div>
-                            </div>
-                        </form><br>
-                            
-                            
-                        </div>
-                    </div>
-                </div>
-   
+                        <p>Not Allowed</p>
+                        @endif
+                        </td>
+                       
+                    </tr>
+                    @endforeach
+                </table>
+           
+            </div>
+        </div>
+    </div>      
 
     <!-- Footer Section Begin -->
     @include('home.footer')

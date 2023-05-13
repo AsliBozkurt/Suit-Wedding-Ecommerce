@@ -57,8 +57,9 @@
                                     <li><a href="./checkout.html">Check Out</a></li>
                                 </ul>
                             </li> -->
-                            <li><a href="#">FAQs</a></li>
                             <li><a href="./contact.html">İletişim</a></li>
+                            <li><a href="{{url('show_cart')}}">Sepet</a></li>
+                            <li><a href="{{url('show_order')}}">Sipariş</a></li>
                         </ul>
                     </nav>
                 </div>

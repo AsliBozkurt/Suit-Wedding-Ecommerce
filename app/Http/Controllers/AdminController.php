@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Catagory;
 use App\Models\Product;
+use App\Models\Order;
 
 class AdminController extends Controller
 {
@@ -92,6 +93,31 @@ public function add_product(Request $request){
         $product->save();
         return redirect()->back()->with('message','Başarıyla güncellendi');
     }
+
+    public function order(){
+
+        $order=order::all();
+        return view('admin.order',compact('order'));
+    }
+
+    public function delivered($order_id, $delivery_status){
+
+        $order=order::find($order_id);
+        $order->delivery_status = $delivery_status;
+        $order->payment_status="paid";
+
+        $order->save();
+        return redirect()->back();
+    }
+
+    public function searchdata(Request $request){
+
+        $searchText=$request->search;
+        $order=order::where('name','LIKE'," %$searchText%")->orWhere('phone','LIKE'," %$searchText%")->orWhere('product_title','LIKE'," %$searchText%")->get();
+
+        return view('admin.order',compact('order'));
+    }
+
 }
 
 
